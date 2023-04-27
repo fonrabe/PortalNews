@@ -60,3 +60,26 @@ class NewsDelete(DeleteView):
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('post_list')
+
+
+class CreateArticle(CreateNews):
+    form_class = NewsForm
+    model = Post
+    template_name = 'create_news.html'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.categoryType = 'AR'
+        return super().form_valid(form)
+
+
+class ArticleUpdate(UpdateView):
+    form_class = NewsForm
+    model = Post
+    template_name = 'create_news.html'
+
+
+class ArticleDelete(DeleteView):
+    model = Post
+    template_name = 'news_delete.html'
+    success_url = reverse_lazy('post_list')
