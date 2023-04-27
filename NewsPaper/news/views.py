@@ -1,7 +1,9 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .filters import PostFilter
 from news.models import Post
+from .forms import NewsForm
+from django.urls import reverse_lazy
 
 
 class PostsList(ListView):
@@ -19,7 +21,15 @@ class PostDetails(DetailView):
 
 
 class CreateNews(CreateView):
-    pass
+    form_class = NewsForm
+    model = Post
+    template_name = 'create_news.html'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.categoryType = 'NW'
+        print(post)
+        return super().form_valid(form)
 
 
 class PostSearch(ListView):
@@ -38,3 +48,15 @@ class PostSearch(ListView):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
         return context
+
+
+class PostUpdate(UpdateView):
+    form_class = NewsForm
+    model = Post
+    template_name = 'create_news.html'
+
+
+class NewsDelete(DeleteView):
+    model = Post
+    template_name = 'news_delete.html'
+    success_url = reverse_lazy('post_list')

@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
+from django.urls import reverse
 
 
 class Author(models.Model):
@@ -19,6 +20,8 @@ class Author(models.Model):
         self.rating = pRat * 3 + cRat
         self.save()
 
+    # def __str__(self):
+    #     return self.autoUser
 
 
 class Category(models.Model):
@@ -55,6 +58,9 @@ class Post(models.Model):
 
     def preview(self):
         return self.text[0:123] + '...'
+
+    def get_absolute_url(self):
+        return reverse('detail_news', kwargs={'pk': self.pk})
 
     # def __str__(self):
     #     pass
