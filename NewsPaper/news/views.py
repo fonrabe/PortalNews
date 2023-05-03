@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .filters import PostFilter
@@ -20,7 +21,8 @@ class PostDetails(DetailView):
     context_object_name = 'post'
 
 
-class CreateNews(CreateView):
+class CreateNews(LoginRequiredMixin, CreateView):
+    raise_exception = True
     form_class = NewsForm
     model = Post
     template_name = 'create_news.html'
