@@ -9,18 +9,34 @@ Posts
 {% block content %}
 <h1>Все новости</h1>
 <h2>{{ posts | length}}</h2>
+
+    {% if perms.news.add_post %}
+        <a href="{% url 'add_news' %}">Добавить новость</a>
+    {% endif %}
     {% if posts %}
         <table>
             <tr>
                 <td><b>Заголовок</b></td>
                 <td><b>Дата публикации</b></td>
                 <td><b>Текст</b></td>
+                {% if perms.news.change_post or perms.news.delete_post %}
+                <td><b>Действия</b></td>
+                {% endif %}
             </tr>
             {% for post in posts %}
             <tr>
                 <td>{{ post.title | censor }}</td>
                 <td>{{ post.dateCreate | date:'d M Y' }}</td>
                 <td>{{ post.text | truncatechars:20 }}</td>
+
+                <td>
+                    {% if perms.news.change_post %}
+                    <a href="{% url 'edit_news' pk=post.id %}">Изменить</a>
+                    {% endif %}
+                    {% if perms.news.delete_post %}
+                    <a href="{% url 'delete_news' post.id %}">Удалить</a>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
          </table>

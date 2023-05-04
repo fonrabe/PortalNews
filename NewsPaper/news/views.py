@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .filters import PostFilter
@@ -21,7 +21,8 @@ class PostDetails(DetailView):
     context_object_name = 'post'
 
 
-class CreateNews(LoginRequiredMixin, CreateView):
+class CreateNews(PermissionRequiredMixin, CreateView):
+    permission_required = ('news.add_post',)
     raise_exception = True
     form_class = NewsForm
     model = Post
@@ -52,19 +53,22 @@ class PostSearch(ListView):
         return context
 
 
-class PostUpdate(UpdateView):
+class PostUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = ('news.edit_post',)
     form_class = NewsForm
     model = Post
     template_name = 'create_news.html'
 
 
-class NewsDelete(DeleteView):
+class NewsDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = ('news.delete_post')
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('post_list')
 
 
 class CreateArticle(CreateNews):
+    # permission_required = ('news.add_post',)
     form_class = NewsForm
     model = Post
     template_name = 'create_news.html'
