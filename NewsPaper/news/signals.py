@@ -11,8 +11,8 @@ def news_create(instance, created, **kwargs):
     if not created:
         return
 
-    emails = User.objects.filter(subscriptions__category = instance.PostCategory).values_list('email', flat=True)
-    subject = f'Новая статья в категории { instance.PostCategory }'
+    emails = User.objects.filter(subscriptions__category = instance.postCategory).values_list('email', flat=True)
+    subject = f'Новая статья в категории { instance.postCategory }'
 
     text_content = (
         f'Новость: { instance.title }\n'

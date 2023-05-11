@@ -169,3 +169,9 @@ SERVER_EMAIL = "example@yandex.ru"
 
 if DEBUG:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+APSCHEDULLER_DATETIME_FORMAT = 'N j,y, f:s a'
+
+APSCHEDULLER_RUN_NOW_TIMEOUT = 25
+
+SITE_URL = '127.0.0.1:8000'
