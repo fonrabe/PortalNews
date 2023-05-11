@@ -62,8 +62,8 @@ class Post(models.Model):
     def get_absolute_url(self):
         return reverse('detail_news', kwargs={'pk': self.pk})
 
-    # def __str__(self):
-    #     pass
+    def __str__(self):
+        return self.title
 
 
 class PostCategory(models.Model):
@@ -85,3 +85,16 @@ class Comment(models.Model):
     def dislike(self):
         self.comm_rating -= 1
         self.save()
+
+
+class Subscriber(models.Model):
+    user = models.ForeignKey(
+        to=User,
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
+    category = models.ForeignKey(
+        to='Category',
+        on_delete=models.CASCADE,
+        related_name='subscriptions',
+    )
