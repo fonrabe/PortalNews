@@ -23,6 +23,15 @@ class PostDetails(DetailView):
     template_name = 'post.html'
     context_object_name = 'post'
 
+    def get_object(self, *args, **kwargs):
+        obj = cache.get(f'post-{self[pk]}', None)
+        #Если новости нет в кеше (None), то получаем ее и записываем в кеш
+        if not obj:
+            obj = super().get_object(queryset= self.queryset)
+            cache.set(f'post-{self[pk]}', obj)
+
+        return obj
+
 
 class CreateNews(PermissionRequiredMixin, CreateView):
     permission_required = ('news.add_post',)
